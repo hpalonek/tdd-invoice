@@ -2,7 +2,7 @@ package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
 
-public abstract class Product {
+public abstract class Product{
 	private final String name;
 
 	private final BigDecimal price;
@@ -10,10 +10,32 @@ public abstract class Product {
 	private final BigDecimal taxPercent;
 
 	protected Product(String name, BigDecimal price, BigDecimal tax) {
-		this.name = name;
-		this.price = price;
-		this.taxPercent = tax;
+		
+		if (name == null || name == "" ) {
+			throw new IllegalArgumentException("Wrong name");
+		}
+		
+		else{
+			this.name = name;
+		}
+		
+		if(price.intValue() < 0 || price == null) {
+			throw new IllegalArgumentException("Wrong price");
+		}
+		else {
+			this.price = price;
+		}
+		
+		if(tax.intValue()< 0 || tax == null) {
+			throw new IllegalArgumentException("Wrong tax");
+		}
+		else{
+			this.taxPercent = tax;
+		}
+		
 	}
+	
+	
 
 	public String getName() {
 		return this.name;
