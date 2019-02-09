@@ -11,7 +11,7 @@ public abstract class Product{
 
 	protected Product(String name, BigDecimal price, BigDecimal tax) {
 		
-		if (name == null || name == "" ) {
+		if (name == null || name.equals("")) { // lepsze niż name == "" tu sa dwie raferencje, bo wszystkie wystapienia takie same stringa beda domyslenie zastapione ta sama instancją
 			throw new IllegalArgumentException("Wrong name");
 		}
 		
