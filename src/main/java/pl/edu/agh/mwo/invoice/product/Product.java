@@ -15,24 +15,17 @@ public abstract class Product{
 			throw new IllegalArgumentException("Wrong name");
 		}
 		
-		else{
-			this.name = name;
-		}
-		
-		if(price.intValue() < 0 || price == null) {
+		if( price == null || price.intValue() < 0) {
 			throw new IllegalArgumentException("Wrong price");
 		}
-		else {
-			this.price = price;
-		}
 		
-		if(tax.intValue()< 0 || tax == null) {
+		if(tax == null || tax.intValue()< 0) {
 			throw new IllegalArgumentException("Wrong tax");
 		}
-		else{
-			this.taxPercent = tax;
-		}
-		
+
+		this.name = name;
+		this.price = price;
+		this.taxPercent = tax;
 	}
 	
 	
