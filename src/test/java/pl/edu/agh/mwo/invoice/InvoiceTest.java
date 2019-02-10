@@ -147,4 +147,40 @@ public class InvoiceTest {
 		Integer number2 = invoice.getNumber();
 		Assert.assertThat(number1, Matchers.comparesEqualTo(number2));
 	}
+	
+	@Test
+	public void testPrintedInvoiceHasNumber() {
+		String printedInvoice = invoice.getAsText();
+		String number = invoice.getNumber().toString();
+		Assert.assertThat(printedInvoice,  Matchers.containsString("nr "+number));
+	}
+	
+	@Test
+	public void testPrintedInvoiceHasProductsName() {
+		Product product = new TaxFreeProduct("Chleb", new BigDecimal("5"));
+		invoice.addProduct(product);
+		String printedInvoice = invoice.getAsText();
+		Assert.assertThat(printedInvoice,  Matchers.containsString(product.getName()));
+		
+	}
+	
+	@Test
+	public void testPrintedInvoiceHasProductsPrice() {
+		Product product = new TaxFreeProduct("Chleb", new BigDecimal("5"));
+		invoice.addProduct(product);
+		String printedInvoice = invoice.getAsText();
+		Assert.assertThat(printedInvoice,  Matchers.containsString(product.getPrice().toString()));
+		
+	}
+	
+	@Test
+	public void testAddingTheSameProductTwice() {
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")));
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")));
+		String printedInvoice = invoice.getAsText();
+		Assert.assertThat(printedInvoice,  Matchers.containsString("Chleb 2 5"));
+		
+		
+	}
 }
+

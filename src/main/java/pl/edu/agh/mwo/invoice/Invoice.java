@@ -1,14 +1,16 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-	private Map<Product, Integer> products = new HashMap<Product, Integer>();
-	private int number;
+	private Map<Product, Integer> products = new LinkedHashMap<Product, Integer>();
+	private Integer number;
 	private static Integer nextNumber = 1;
 	
 	public Invoice() {
@@ -17,6 +19,8 @@ public class Invoice {
 	}
 	
 	public void addProduct(Product product) {
+		
+		
 		addProduct(product, 1);
 	}
 
@@ -24,7 +28,13 @@ public class Invoice {
 		if (product == null || quantity <= 0) {
 			throw new IllegalArgumentException();
 		}
-		products.put(product, quantity);
+		if (this.products.containsKey(product)){
+			Integer currentQuantity = this.products.get(product);
+			this.products.put(product,  currentQuantity + quantity);
+		}else {
+			this.products.put(product, quantity);
+		}
+		
 	}
 
 	public BigDecimal getNetTotal() {
@@ -53,4 +63,31 @@ public class Invoice {
 		// TODO Auto-generated method stub
 		return number;
 	}
+	
+	public String getAsText() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append("Faktura nr "+ number.toString());
+
+		DecimalFormat df = new DecimalFormat("0.00");
+		for (Product product : products.keySet()) {
+			BigDecimal quantity = new BigDecimal(products.get(product));
+			String quantityString = quantity.toString();
+			String nameProduct = product.getName();
+			String priceString = df.format(product.getPrice()).toString();
+			
+			sb.append("\n");
+			sb.append(nameProduct);
+			sb.append(" ");
+			sb.append(quantityString);
+			sb.append(" ");
+			sb.append(priceString);
+			
+		}
+		
+		sb.append("\nLiczba pozycji: "+ products.size());
+		
+		return sb.toString();
+	}
+	
+	
 }
